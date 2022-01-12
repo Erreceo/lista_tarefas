@@ -1,0 +1,19 @@
+body{
+    font-size: 30px;
+}
+
+.concluido {
+    text-decoration: line-through;
+}
+
+.urgente {
+    font-weight: bold; color: red;
+}
+
+.icone {
+    display: none;
+}
+
+ul {
+    list-style: none;
+}
