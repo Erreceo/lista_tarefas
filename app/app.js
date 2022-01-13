@@ -32,36 +32,55 @@ function adicionarTarefa(){
 function criarLista () {
     listaTarefas = listaTarefas.sort(item => item.urgente === true? -1: 1);
 
-    let ul = document.getElementById('listaTarefas');
-    let listaLis = document.querySelectorAll('li');
+    let divBase = document.getElementById('listaTarefas');
+    let listaLis = document.querySelectorAll('#listaTarefas > div');
     for( let i = 0; i<listaLis.length; i++){
         listaLis[i].remove();
     }
     for(let i = 0; i<listaTarefas.length; i++){
-        let li = document.createElement('li');
-        li.innerText = listaTarefas[i].texto;
-        li.addEventListener('dblclick', deleteTarefa);
-        li.addEventListener('click', marcarComoConcluido);
-        li.addEventListener('mouseover', toogleIcone);
-        li.addEventListener('mouseout', toogleIcone)
+        let divContainer = document.createElement('div');
+
+        divContainer.addEventListener('dblclick', deleteTarefa);
+        divContainer.addEventListener('click', marcarComoConcluido);
+        divContainer.addEventListener('mouseover', toogleIcone);
+        divContainer.addEventListener('mouseout', toogleIcone)
+        divContainer.classList.add('container')
+
+        let divRow = document.createElement('div');
+        divRow.classList.add('row');
+
+        let divCelulaTexto = document.createElement('div')
+        divCelulaTexto.classList.add('col-11');
+        let paragrafo = document.createElement('p')
+
         if(listaTarefas[i].urgente){
-            li.classList.add('urgente');
+            paragrafo.classList.add('urgente');
         }else{
-            li.classList.remove('urgente');
+            paragrafo.classList.remove('urgente');
         }
+        paragrafo.classList.add('h2');
+        paragrafo.innerText = listaTarefas[i].texto;
+        divCelulaTexto.appendChild(paragrafo)
+        let divCelulaImagem = document.createElement('div');
+        divCelulaImagem.classList.add('col-1');
+        divCelulaImagem.classList.add('centralizar-imagem')
+        divCelulaImagem.addEventListener('click', toogleUrgente)
         let image = document.createElement('img');
         image.classList.add('icone');
         image.src = './assets/exclamation-thick.svg'
-        image.addEventListener('click', toogleUrgente)
-        li.appendChild(image);
-        ul.appendChild(li);
+        divCelulaImagem.appendChild(image)
+        divRow.appendChild(divCelulaImagem);
+        divRow.appendChild(divCelulaTexto)
+        divContainer.appendChild(divRow);
+
+        divBase.appendChild(divContainer);
     }
 }
 btn.addEventListener('click', adicionarTarefa);
 
 function toogleUrgente(event){
-    let nodes = Array.from(event.target.closest('ul').children);
-    let index = nodes.indexOf(event.target.parentElement);
+    let nodes = Array.from(event.target.closest('#listaTarefas').children);
+    let index = nodes.indexOf(event.target.parentElement.parentElement.parentElement);
 
     console.log(listaTarefas[index])
     listaTarefas[index].urgente = !listaTarefas[index].urgente;
@@ -94,7 +113,7 @@ function deleteTarefa(event){
     let confirmAction = confirm("Tem certeza que deseja excluir essa tarefa?");
 
     if(confirmAction){
-        let nodes = Array.from(event.target.closest('ul').children);
+        let nodes = Array.from(event.target.closest('div').children);
         let index = nodes.indexOf(event.target);
         listaTarefas.splice(index, 1);
         criarLista();
@@ -103,9 +122,11 @@ function deleteTarefa(event){
 }
 
 function toogleIcone(event){
-    if(!hasClass(event.target.querySelector('img'), 'icone')){
-        event.target.querySelector('img').classList.add('icone');
+
+    console.log('funcionou')
+    if(!hasClass(event.target.parentElement.parentElement.querySelector('div > img'), 'icone')){
+        event.target.parentElement.parentElement.querySelector('div > img').classList.add('icone');
     }else{
-        event.target.querySelector('img').classList.remove('icone');
+        event.target.parentElement.parentElement.querySelector('div > img').classList.remove('icone');
     }
 }

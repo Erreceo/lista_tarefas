@@ -1,5 +1,10 @@
 body{
     font-size: 30px;
+    background-color: lightgray;
+}
+
+body>div {
+    margin: 50px;
 }
 
 .concluido {
@@ -16,4 +21,22 @@ body{
 
 ul {
     list-style: none;
+}
+
+.card {
+    padding: 10px;
+}
+
+.button-align {
+    margin: 4px
+}
+
+#listaTarefas{
+    padding: 10px;
+}
+
+.centralizar-imagem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
